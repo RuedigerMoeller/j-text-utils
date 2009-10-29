@@ -38,11 +38,11 @@ public class TextTable {
 		// Find the maximum length of a string in each column
 		int[] lengths = new int[tableModel.getColumnCount()];
 		
-		for (int i = 0; i < tableModel.getColumnCount(); i++) {
-			for (int j = 0; j < tableModel.getRowCount(); j++) {
-				Object val = tableModel.getValueAt(j, i);
+		for (int col = 0; col < tableModel.getColumnCount(); col++) {
+			for (int row = 0; row < tableModel.getRowCount(); row++) {
+				Object val = tableModel.getValueAt(row, col);
 				String valStr = val == null ? "" : String.valueOf(val); 
-				lengths[j] = Math.max(valStr.length(), lengths[j]);
+				lengths[col] = Math.max(valStr.length(), lengths[col]);
 			}
 		}
 
@@ -54,7 +54,7 @@ public class TextTable {
 		int totLength = 0;
 		String[] formats = new String[lengths.length];
 		for (int i = 0; i < lengths.length; i++) {
-			formats[i] = "%1$" + lengths[i] + "s|" + (i + 1 == lengths.length ? "\n" : " ");
+			formats[i] = "%1$-" + lengths[i] + "s|" + (i + 1 == lengths.length ? "\n" : " ");
 			totLength += lengths[i]; 
 		}
 
