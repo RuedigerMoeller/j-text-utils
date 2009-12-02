@@ -19,7 +19,7 @@ public class TextTreeTableTest {
 		tt.setAddRowNumbering(true);
 //		tt.addSeparatorPolicy(new LastRowSeparatorPolicy());
 		tt.setSort(0);
-		tt.printTable();		
+		tt.printTable(System.out, 5);		
 	}
 
 	@Test
