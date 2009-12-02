@@ -78,8 +78,8 @@ public class TextTable {
 
 		int rowCount = tableModel.getRowCount();
 		int rowCountStrSize = Integer.toString(rowCount).length();
-		String indexFormat1 = "%1$-" + rowCountStrSize + "s  |";
-		String indexFormat2 = "%1$" + rowCountStrSize + "s. |";
+		String indexFormat1 = "%1$-" + rowCountStrSize + "s  ";
+		String indexFormat2 = "%1$" + rowCountStrSize + "s. ";
 
 		// Generate a format string for each column and calc totalLength
 		int totLength = 0;
@@ -110,10 +110,10 @@ public class TextTable {
 
 		// Print 'em out
 		for (int i = 0; i < tableModel.getRowCount(); i++) {
+			addSeparatorIfNeeded(ps, separator, indexFormat1, i);
 			if (addRowNumbering) {
 				ps.printf(indexFormat2, i + 1);
 			}
-			addSeparatorIfNeeded(ps, separator, indexFormat1, i);
 			for (int j = 0; j < tableModel.getColumnCount(); j++) {
 				printValue(ps, i, j, false);
 			}
