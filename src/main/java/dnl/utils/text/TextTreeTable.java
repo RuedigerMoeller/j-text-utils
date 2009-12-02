@@ -1,5 +1,7 @@
 package dnl.utils.text;
 
+import java.io.PrintStream;
+
 import javax.swing.table.TableModel;
 
 /**
@@ -30,7 +32,11 @@ public class TextTreeTable extends TextTable {
 		this.hierarchicalColumn = hierarchicalColumn;
 	}
 
-	
+	@Override
+	public void printTable(PrintStream ps, int indent) {
+		TextTableRenderer renderer = new TextTreeTableRenderer(this);
+		renderer.render(ps, indent);
+	}
 	
 	private class TreeTableSeparatorPolicy extends SeparatorPolicy{
 
