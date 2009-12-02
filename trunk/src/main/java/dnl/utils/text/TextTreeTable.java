@@ -1,5 +1,7 @@
 package dnl.utils.text;
 
+import java.io.PrintStream;
+
 import javax.swing.table.TableModel;
 
 /**
@@ -26,10 +28,19 @@ public class TextTreeTable extends TextTable {
 		addSeparatorPolicy(new TreeTableSeparatorPolicy());
 	}
 
-	public void setHierarchicalColumn(int hierarchicalColumn) {
+	protected void setHierarchicalColumn(int hierarchicalColumn) {
 		this.hierarchicalColumn = hierarchicalColumn;
 	}
 
+	@Override
+	protected void printValue(PrintStream ps, int row, int col, boolean c){
+		boolean empty = false;
+		if( row != 0 && col == hierarchicalColumn && !hasSeparatorAt(row)){
+			empty = true;
+		}
+		super.printValue(ps, row, col, empty);
+	}
+	
 	
 	private class TreeTableSeparatorPolicy extends SeparatorPolicy{
 

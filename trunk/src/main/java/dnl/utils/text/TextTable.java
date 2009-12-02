@@ -25,6 +25,8 @@ public class TextTable {
 	private boolean addRowNumbering;
 
 	protected RowSorter<?> rowSorter;
+	
+	protected String[] formats;
 
 	public TextTable(TableModel tableModel) {
 		this.tableModel = tableModel;
@@ -81,7 +83,7 @@ public class TextTable {
 
 		// Generate a format string for each column and calc totalLength
 		int totLength = 0;
-		String[] formats = new String[lengths.length];
+		formats = new String[lengths.length];
 		for (int i = 0; i < lengths.length; i++) {
 			StringBuilder sb = new StringBuilder();
 			if (i == 0) {
@@ -111,18 +113,22 @@ public class TextTable {
 			if (addRowNumbering) {
 				ps.printf(indexFormat2, i + 1);
 			}
-			int rowIndex = i;
-			if (rowSorter != null) {
-				rowIndex = rowSorter.convertRowIndexToModel(i);
-			}
 			addSeparatorIfNeeded(ps, separator, indexFormat1, i);
 			for (int j = 0; j < tableModel.getColumnCount(); j++) {
-				Object value = tableModel.getValueAt(rowIndex, j);
-				ps.printf(formats[j], value);
+				printValue(ps, i, j, false);
 			}
 		}
 	}
 
+	protected void printValue(PrintStream ps, int row, int col, boolean empty){
+		int rowIndex = row;
+		if (rowSorter != null) {
+			rowIndex = rowSorter.convertRowIndexToModel(row);
+		}
+		Object value = empty ? "" : tableModel.getValueAt(rowIndex, col);
+		ps.printf(formats[col], value);
+	}
+	
 	protected Object getValueAt(int row, int column){
 		int rowIndex = row;
 		if (rowSorter != null) {
@@ -167,7 +173,7 @@ public class TextTable {
 		}
 	}
 
-	private boolean hasSeparatorAt(int row) {
+	protected boolean hasSeparatorAt(int row) {
 		for (SeparatorPolicy separatorPolicy : separatorPolicies) {
 			if (separatorPolicy.hasSeparatorAt(row)) {
 				return true;
