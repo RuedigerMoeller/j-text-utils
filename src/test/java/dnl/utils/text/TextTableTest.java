@@ -6,7 +6,7 @@ public class TextTableTest {
 
 	@Test
 	public void printTableWithThreeColumns(){
-		String[] titles = { "cotttumn1", "colu345345mn2", "columnfff3" };
+		String[] titles = { "column1", "column2", "column3" };
 		String[][] data = { 
 				{ "val10", "val20", "val30" }, 
 				{ "val13", "val20", "val30" }, 
@@ -24,7 +24,7 @@ public class TextTableTest {
 
 	@Test
 	public void printTableWithTwoColumns(){
-		String[] titles = { "cotttumn1", "colu345345mn2"};
+		String[] titles = { "column1", "column2"};
 		String[][] data = { 
 				{ "val10", "val20"}, 
 				{ "val13", "val20"}, 
@@ -42,7 +42,7 @@ public class TextTableTest {
 
 	@Test
 	public void printTableWithOneColumn(){
-		String[] titles = { "cotttumn1"};
+		String[] titles = { "column1"};
 		String[][] data = { 
 				{ "val10"}, 
 				{ "val13"}, 
