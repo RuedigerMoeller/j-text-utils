@@ -37,8 +37,9 @@ public class TextTreeTable extends TextTable {
 		boolean hasSeparatorAt(int row) {
 			if(row == 0)
 				return false;
-			Object rowAgo = tableModel.getValueAt(row-1, hierarchicalColumn);
-			Object hierarchicalColumnVal = tableModel.getValueAt(row, hierarchicalColumn);
+			Object rowAgo = getValueAt(row-1, hierarchicalColumn);
+			Object hierarchicalColumnVal = getValueAt(row, hierarchicalColumn);
+			//System.out.println(row+ "> "+rowAgo+"-"+hierarchicalColumnVal);
 			if(!hierarchicalColumnVal.equals(rowAgo)){
 				return true;
 			}

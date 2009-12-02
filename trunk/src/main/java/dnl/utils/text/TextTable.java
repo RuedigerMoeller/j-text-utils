@@ -4,8 +4,11 @@ import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.RowSorter;
+import javax.swing.SortOrder;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
+import javax.swing.table.TableRowSorter;
 
 import org.apache.commons.lang.StringUtils;
 
@@ -20,6 +23,8 @@ public class TextTable {
 	private List<SeparatorPolicy> separatorPolicies = new ArrayList<SeparatorPolicy>();
 
 	private boolean addRowNumbering;
+
+	protected RowSorter<?> rowSorter;
 
 	public TextTable(TableModel tableModel) {
 		this.tableModel = tableModel;
@@ -47,20 +52,16 @@ public class TextTable {
 		separatorPolicy.setTableModel(tableModel);
 	}
 
-	public static void main(String[] args) {
-		String[] titles = { "cotttumn1", "colu345345mn2", "columnfff3" };
+	public void setSort(int column) {
+		setSort(column, SortOrder.ASCENDING);
+	}
 
-		String[][] tst = { { "val10", "val20", "val30" }, { "val11", "val21", "val31" },
-							{ "val11", "val21", "val31" }, { "val11", "val21", "val31" },
-							{ "val11", "val21", "val31" }, { "val13", "val21", "val31" },
-							{ "val12", "val25", "val31" }, { "val13", "val21", "val31" },
-							{ "val11", "val21", "val31" }, { "val11", "val21", "val31" },
-							{ "val12", "val23", "val31" }, { "val11", "val29", "val31" },
-							{ "val11", "val21", "val31" }, { "val12", "val22", "val32" }, };
-		TextTable tt = new TextTable(titles, tst);
-		tt.setAddRowNumbering(true);
-		tt.addSeparatorPolicy(new LastRowSeparatorPolicy());
-		tt.printTable();
+	public void setSort(int column, SortOrder sortOrder) {
+		rowSorter = new TableRowSorter<TableModel>(this.tableModel);
+		List<RowSorter.SortKey> sortKeys = new ArrayList<RowSorter.SortKey>();
+		// sortKeys.add(new RowSorter.SortKey(1, SortOrder.ASCENDING));
+		sortKeys.add(new RowSorter.SortKey(column, sortOrder));
+		rowSorter.setSortKeys(sortKeys);
 	}
 
 	public void printTable() {
@@ -82,7 +83,15 @@ public class TextTable {
 		int totLength = 0;
 		String[] formats = new String[lengths.length];
 		for (int i = 0; i < lengths.length; i++) {
-			formats[i] = " %1$-" + lengths[i] + "s|" + (i + 1 == lengths.length ? "\n" : "");
+			StringBuilder sb = new StringBuilder();
+			if (i == 0) {
+				sb.append("|");
+			}
+			sb.append(" %1$-");
+			sb.append(lengths[i]);
+			sb.append("s|");
+			sb.append(i + 1 == lengths.length ? "\n" : "");
+			formats[i] = sb.toString();
 			totLength += lengths[i];
 		}
 
@@ -92,22 +101,36 @@ public class TextTable {
 		}
 
 		indentAccordingToNumbering(ps, indexFormat1);
-		String headerSep = StringUtils.repeat("=", totLength + 5);
+		String headerSep = StringUtils.repeat("=", totLength + tableModel.getColumnCount() * 2 - 1);
+		ps.print("|");
 		ps.print(headerSep);
 		ps.println("|");
 
 		// Print 'em out
 		for (int i = 0; i < tableModel.getRowCount(); i++) {
-			addSeparatorIfNeeded(ps, separator, indexFormat1, i);
 			if (addRowNumbering) {
 				ps.printf(indexFormat2, i + 1);
 			}
+			int rowIndex = i;
+			if (rowSorter != null) {
+				rowIndex = rowSorter.convertRowIndexToModel(i);
+			}
+			addSeparatorIfNeeded(ps, separator, indexFormat1, i);
 			for (int j = 0; j < tableModel.getColumnCount(); j++) {
-				ps.printf(formats[j], tableModel.getValueAt(i, j));
+				Object value = tableModel.getValueAt(rowIndex, j);
+				ps.printf(formats[j], value);
 			}
 		}
 	}
 
+	protected Object getValueAt(int row, int column){
+		int rowIndex = row;
+		if (rowSorter != null) {
+			rowIndex = rowSorter.convertRowIndexToModel(row);
+		}
+		return tableModel.getValueAt(rowIndex, column);
+	}
+	
 	private int[] resolveColumnLengths() {
 		int[] lengths = new int[tableModel.getColumnCount()];
 
@@ -125,6 +148,9 @@ public class TextTable {
 		StringBuilder sepSb = new StringBuilder();
 
 		for (int j = 0; j < tableModel.getColumnCount(); j++) {
+			if(j == 0){
+				sepSb.append("|");
+			}
 			lengths[j] = Math.max(tableModel.getColumnName(j).length(), lengths[j]);
 			// add 1 because of the leading space in each column
 			sepSb.append(StringUtils.repeat("-", lengths[j] + 1));
