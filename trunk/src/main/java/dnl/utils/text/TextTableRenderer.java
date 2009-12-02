@@ -59,7 +59,7 @@ public class TextTableRenderer {
 			addSeparatorIfNeeded(ps, separator, indexFormat1, i, indentStr);
 			ps.print(indentStr);
 			if (textTable.addRowNumbering) {
-				if(!modelAllowsNumberingAt(rowCount)){
+				if(!modelAllowsNumberingAt(i)){
 					indentAccordingToNumbering(ps, indexFormat1);
 				}
 				else {
@@ -112,9 +112,12 @@ public class TextTableRenderer {
 	}
 	
 	protected boolean modelAllowsNumberingAt(int row){
+		if(row == 8){
+			System.out.print("");
+		}
 		if (tableModel instanceof TextTableModel) {
 			TextTableModel ttm = (TextTableModel) tableModel;
-			return ttm.addSeparatorAt(row);
+			return ttm.allowNumberingAt(row);
 		}
 		return textTable.addRowNumbering;
 	}
@@ -127,6 +130,7 @@ public class TextTableRenderer {
 		Object value = empty ? "" : tableModel.getValueAt(rowIndex, col);
 		ps.printf(formats[col], value);
 	}
+	
 	private int resolveFormats() {
 		int totLength = 0;
 		formats = new String[lengths.length];
