@@ -27,6 +27,8 @@ public class TextTable {
 	protected RowSorter<?> rowSorter;
 	
 	protected String[] formats;
+	
+	protected boolean headless;
 
 	public TextTable(TableModel tableModel) {
 		this.tableModel = tableModel;
@@ -67,11 +69,12 @@ public class TextTable {
 	}
 
 	public void printTable() {
-		printTable(System.out);
+		printTable(System.out, 0);
 	}
 
-	public void printTable(PrintStream ps) {
-
+	public void printTable(PrintStream ps, int indent) {
+		String indentStr = StringUtils.repeat(" ", indent);
+		
 		// Find the maximum length of a string in each column
 		int[] lengths = resolveColumnLengths();
 		String separator = resolveSeparator(lengths);
@@ -97,6 +100,7 @@ public class TextTable {
 			totLength += lengths[i];
 		}
 
+		ps.print(indentStr);
 		indentAccordingToNumbering(ps, indexFormat1);
 		for (int j = 0; j < tableModel.getColumnCount(); j++) {
 			ps.printf(formats[j], tableModel.getColumnName(j));
@@ -104,15 +108,22 @@ public class TextTable {
 
 		indentAccordingToNumbering(ps, indexFormat1);
 		String headerSep = StringUtils.repeat("=", totLength + tableModel.getColumnCount() * 2 - 1);
+		ps.print(indentStr);
 		ps.print("|");
 		ps.print(headerSep);
 		ps.println("|");
 
 		// Print 'em out
 		for (int i = 0; i < tableModel.getRowCount(); i++) {
-			addSeparatorIfNeeded(ps, separator, indexFormat1, i);
+			addSeparatorIfNeeded(ps, separator, indexFormat1, i, indentStr);
+			ps.print(indentStr);
 			if (addRowNumbering) {
-				ps.printf(indexFormat2, i + 1);
+				if(!addRowNumberingAt(rowCount)){
+					indentAccordingToNumbering(ps, indexFormat1);
+				}
+				else {
+					ps.printf(indexFormat2, i + 1);
+				}
 			}
 			for (int j = 0; j < tableModel.getColumnCount(); j++) {
 				printValue(ps, i, j, false);
@@ -120,6 +131,14 @@ public class TextTable {
 		}
 	}
 
+	protected boolean addRowNumberingAt(int row){
+		if (tableModel instanceof TextTableModel) {
+			TextTableModel ttm = (TextTableModel) tableModel;
+			return ttm.addSeparatorAt(row);
+		}
+		return false;
+	}
+	
 	protected void printValue(PrintStream ps, int row, int col, boolean empty){
 		int rowIndex = row;
 		if (rowSorter != null) {
@@ -166,9 +185,10 @@ public class TextTable {
 		return separator;
 	}
 
-	private void addSeparatorIfNeeded(PrintStream ps, String separator, String indexFormat1, int i) {
+	private void addSeparatorIfNeeded(PrintStream ps, String separator, String indexFormat1, int i, String indentStr) {
 		if (!separatorPolicies.isEmpty() && hasSeparatorAt(i)) {
 			indentAccordingToNumbering(ps, indexFormat1);
+			ps.print(indentStr);
 			ps.println(separator);
 		}
 	}
