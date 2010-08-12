@@ -10,7 +10,7 @@ import javax.swing.tree.TreeModel;
 public class TextTree {
 
 	private TreeModel model;
-	private boolean showRoot;
+	private boolean showRoot = true;
 	private StringBuilder sb;
 
 	public TextTree(TreeModel model) {
