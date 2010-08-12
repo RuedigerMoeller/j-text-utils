@@ -1,4 +1,4 @@
-package dnl.utils.text;
+package dnl.utils.text.table;
 
 import javax.swing.table.TableModel;
 

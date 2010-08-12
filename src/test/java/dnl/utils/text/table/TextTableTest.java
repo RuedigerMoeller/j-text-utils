@@ -1,8 +1,10 @@
-package dnl.utils.text;
+package dnl.utils.text.table;
 
 import org.junit.Test;
 
-public class TextTreeTableTest {
+import dnl.utils.text.table.TextTable;
+
+public class TextTableTest {
 
 	@Test
 	public void printTableWithThreeColumns(){
@@ -15,11 +17,11 @@ public class TextTreeTableTest {
 				{ "val12", "val25", "val31" }, 
 				{ "val11", "val21", "val31" }, 
 				};
-		TextTreeTable tt = new TextTreeTable(titles, data);
-		tt.setAddRowNumbering(true);
+		TextTable tt = new TextTable(titles, data);
+//		tt.setAddRowNumbering(true);
 //		tt.addSeparatorPolicy(new LastRowSeparatorPolicy());
 		tt.setSort(0);
-		tt.printTable(System.out, 5);		
+		tt.printTable();		
 	}
 
 	@Test
