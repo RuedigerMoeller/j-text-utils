@@ -29,6 +29,8 @@ tt.setAddRowNumbering(true);
 tt.setSort(0);                                                 
 tt.printTable();                                               
 }}}
+<br>
+The output table looks similar to the one on the home page, only it has numbering.
 
 {{{
    ______________________________________________________________
