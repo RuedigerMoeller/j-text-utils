@@ -1,4 +1,4 @@
-Here is an example that is based on data from !JTable's tutorial
+Here is an example that is based on data from JTable's tutorial
 
 {{{
 String[] columnNames = {                                       
