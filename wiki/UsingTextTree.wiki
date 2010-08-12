@@ -3,7 +3,7 @@ The tree example on the home page, which is from this project tests, is somethin
 <br>
 The tree model:
 {{{
-public class FsModel implements TreeModel {
+public class FsModel implements javax.swing.tree.TreeModel {
 
 	FsObject root;
 
