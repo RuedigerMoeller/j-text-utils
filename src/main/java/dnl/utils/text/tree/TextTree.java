@@ -1,5 +1,7 @@
 package dnl.utils.text.tree;
 
+import java.io.PrintStream;
+
 import javax.swing.tree.TreeModel;
 
 /**
@@ -33,15 +35,31 @@ public class TextTree {
 		this.showRoot = showRoot;
 	}
 
+	/**
+	 * Prints this tree to <code>System.out</code>.
+	 */
+	public void printTree() {
+		System.out.println(toString());
+	}
+
+	/**
+	 * Prints this tree to the given stream.
+	 * 
+	 * @param printStream
+	 */
+	public void printTree(PrintStream printStream) {
+		printStream.println(toString());
+	}
+
 	@Override
 	public String toString() {
 		sb = new StringBuilder();
 		Object root = model.getRoot();
-		printNode2(root, "", "", showRoot);
+		printNode(root, "", "", showRoot);
 		return sb.toString();
 	}
 
-	private void printNode2(Object node, String pref, String bud, boolean render) {
+	private void printNode(Object node, String pref, String bud, boolean render) {
 		if (render) {
 			sb.append(pref);
 			sb.append(bud);
@@ -65,8 +83,7 @@ public class TextTree {
 					ind = pref2;
 					bud2 = "";
 				}
-				printNode2(model.getChild(node, i), !render ? pref3 : ind, !render ? "" : bud2,
-						true);
+				printNode(model.getChild(node, i), !render ? pref3 : ind, !render ? "" : bud2, true);
 			}
 		}
 	}

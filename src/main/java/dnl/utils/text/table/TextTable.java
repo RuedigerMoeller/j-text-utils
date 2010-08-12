@@ -35,7 +35,7 @@ public class TextTable {
 		this.addRowNumbering = addNumbering;
 	}
 
-	public TextTable(String[] columnNames, String[][] data) {
+	public TextTable(String[] columnNames, Object[][] data) {
 		this.tableModel = new DefaultTableModel(data, columnNames);
 	}
 
