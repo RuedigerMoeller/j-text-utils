@@ -1,4 +1,6 @@
 The tree example on the home page, which is from this project tests, is something that resembles the NIX 'tree' command.
+<br>
+<br>
 The tree model:
 {{{
 public class FsModel implements TreeModel {
