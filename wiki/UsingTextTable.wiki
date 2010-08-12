@@ -31,7 +31,7 @@ tt.printTable();
 }}}
 <br>
 The output table looks similar to the one on the home page, only it has numbering.
-
+<br>
 {{{
    ______________________________________________________________
    | First Name| Last Name| Sport        | # of Years| Vegetarian|
