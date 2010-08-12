@@ -1,0 +1,42 @@
+Here is an example that is based on data from !JTable's tutorial
+
+{{{
+String[] columnNames = {                                       
+		"First Name",                                          
+        "Last Name",                                           
+        "Sport",                                               
+        "# of Years",                                          
+        "Vegetarian"};                                         
+                                                               
+                                                               
+Object[][] data = {                                            
+	    {"Kathy", "Smith",                                     
+	     "Snowboarding", new Integer(5), new Boolean(false)},  
+	    {"John", "Doe",                                        
+	     "Rowing", new Integer(3), new Boolean(true)},         
+	    {"Sue", "Black",                                       
+	     "Knitting", new Integer(2), new Boolean(false)},      
+	    {"Jane", "White",                                      
+	     "Speed reading", new Integer(20), new Boolean(true)}, 
+	    {"Joe", "Brown",                                       
+	     "Pool", new Integer(10), new Boolean(false)}          
+	};                                                         
+                                                               
+TextTable tt = new TextTable(columnNames, data);         
+// this adds the numbering on the left      
+tt.setAddRowNumbering(true);      
+// sort by the first column                              
+tt.setSort(0);                                                 
+tt.printTable();                                               
+}}}
+
+{{{
+   ______________________________________________________________
+   | First Name| Last Name| Sport        | # of Years| Vegetarian|
+   |=============================================================|
+1. | Jane      | White    | Speed reading| 20        | true      |
+2. | Joe       | Brown    | Pool         | 10        | false     |
+3. | John      | Doe      | Rowing       | 3         | true      |
+4. | Kathy     | Smith    | Snowboarding | 5         | false     |
+5. | Sue       | Black    | Knitting     | 2         | false     |
+}}}
