@@ -4,7 +4,7 @@
 	<groupId>dnl.utils</groupId>
 	<artifactId>j-text-utils</artifactId>
 	<packaging>jar</packaging>
-	<version>0.3</version>
+	<version>0.3.1</version>
 	<name>Java Text Utilities</name>
 	<url>http://code.google.com/p/j-text-utils</url>
 
