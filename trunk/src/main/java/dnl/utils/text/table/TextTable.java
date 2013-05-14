@@ -1,5 +1,6 @@
 package dnl.utils.text.table;
 
+import java.io.OutputStream;
 import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.List;
@@ -71,6 +72,11 @@ public class TextTable {
 	public void printTable(PrintStream ps, int indent) {
 		TextTableRenderer renderer = new TextTableRenderer(this);
 		renderer.render(ps, indent);
+	}
+
+	public void toCsv(OutputStream os) {
+		CsvTableRenderer csvTableRenderer = new CsvTableRenderer(this);
+		csvTableRenderer.render(os, 0);
 	}
 
 	protected Object getValueAt(int row, int column) {
