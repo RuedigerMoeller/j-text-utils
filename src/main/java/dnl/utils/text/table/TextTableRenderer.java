@@ -1,29 +1,38 @@
 package dnl.utils.text.table;
 
+import java.io.OutputStream;
 import java.io.PrintStream;
+import java.io.Writer;
 
 import javax.swing.table.TableModel;
 
 import org.apache.commons.lang.StringUtils;
 
-public class TextTableRenderer {
+public class TextTableRenderer implements TableRenderer {
 
 	protected String[] formats;
 	protected int[] lengths;
-	
+
 	protected TextTable textTable;
-	
+
 	protected TableModel tableModel;
-	
+
 	public TextTableRenderer(TextTable textTable) {
 		this.textTable = textTable;
 		this.tableModel = textTable.getTableModel();
-	}		
-	
-	public void render(PrintStream ps, int indent){
+	}
+
+	@Override
+	public void render(OutputStream os, int indent) {
+		PrintStream ps;
+		if (os instanceof PrintStream) {
+			ps = (PrintStream) os;
+		} else {
+			ps = new PrintStream(os);
+		}
 		TableModel tableModel = textTable.getTableModel();
 		String indentStr = StringUtils.repeat(" ", indent);
-		
+
 		// Find the maximum length of a string in each column
 		resolveColumnLengths();
 		String separator = resolveSeparator(lengths);
@@ -59,10 +68,9 @@ public class TextTableRenderer {
 			addSeparatorIfNeeded(ps, separator, indexFormat1, i, indentStr);
 			ps.print(indentStr);
 			if (textTable.addRowNumbering) {
-				if(!modelAllowsNumberingAt(i)){
+				if (!modelAllowsNumberingAt(i)) {
 					indentAccordingToNumbering(ps, indexFormat1);
-				}
-				else {
+				} else {
 					ps.printf(indexFormat2, i + 1);
 				}
 			}
@@ -71,7 +79,7 @@ public class TextTableRenderer {
 			}
 		}
 	}
-	
+
 	private void resolveColumnLengths() {
 		lengths = new int[tableModel.getColumnCount()];
 
@@ -88,7 +96,7 @@ public class TextTableRenderer {
 		StringBuilder sepSb = new StringBuilder();
 
 		for (int j = 0; j < tableModel.getColumnCount(); j++) {
-			if(j == 0){
+			if (j == 0) {
 				sepSb.append("|");
 			}
 			lengths[j] = Math.max(tableModel.getColumnName(j).length(), lengths[j]);
@@ -102,17 +110,15 @@ public class TextTableRenderer {
 
 	private void addSeparatorIfNeeded(PrintStream ps, String separator, String indexFormat1, int i, String indentStr) {
 		if (!textTable.separatorPolicies.isEmpty() && textTable.hasSeparatorAt(i)
-				|| ((tableModel instanceof TextTableModel) && ((TextTableModel) tableModel)
-						.addSeparatorAt(i))		
-		) {
+				|| ((tableModel instanceof TextTableModel) && ((TextTableModel) tableModel).addSeparatorAt(i))) {
 			indentAccordingToNumbering(ps, indexFormat1);
 			ps.print(indentStr);
 			ps.println(separator);
 		}
 	}
-	
-	protected boolean modelAllowsNumberingAt(int row){
-		if(row == 8){
+
+	protected boolean modelAllowsNumberingAt(int row) {
+		if (row == 8) {
 			System.out.print("");
 		}
 		if (tableModel instanceof TextTableModel) {
@@ -121,8 +127,8 @@ public class TextTableRenderer {
 		}
 		return textTable.addRowNumbering;
 	}
-	
-	protected void printValue(PrintStream ps, int row, int col, boolean empty){
+
+	protected void printValue(PrintStream ps, int row, int col, boolean empty) {
 		int rowIndex = row;
 		if (textTable.rowSorter != null) {
 			rowIndex = textTable.rowSorter.convertRowIndexToModel(row);
@@ -130,7 +136,7 @@ public class TextTableRenderer {
 		Object value = empty ? "" : tableModel.getValueAt(rowIndex, col);
 		ps.printf(formats[col], value);
 	}
-	
+
 	private int resolveFormats() {
 		int totLength = 0;
 		formats = new String[lengths.length];
@@ -148,10 +154,15 @@ public class TextTableRenderer {
 		}
 		return totLength;
 	}
-	
+
 	private void indentAccordingToNumbering(PrintStream ps, String indexFormat1) {
 		if (textTable.addRowNumbering) {
 			ps.printf(indexFormat1, "");
 		}
+	}
+
+	@Override
+	public void render(Writer w, int indent) {
+		throw new UnsupportedOperationException();
 	}
 }
