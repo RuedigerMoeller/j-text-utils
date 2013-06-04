@@ -1,4 +1,4 @@
-package dnl.utils.text.table.csv;
+package dnl.utils.text.table;
 
 import static org.junit.Assert.assertEquals;
 
@@ -8,6 +8,7 @@ import org.junit.Test;
 import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.Table;
 
+import dnl.utils.text.table.GuavaTableModel;
 import dnl.utils.text.table.TextTable;
 
 public class GuavaTableModelTest {
