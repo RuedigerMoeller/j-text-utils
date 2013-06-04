@@ -17,9 +17,17 @@ public class TextTableRenderer implements TableRenderer {
 
 	protected TableModel tableModel;
 
+	private boolean showNulls = false;
+
 	public TextTableRenderer(TextTable textTable) {
 		this.textTable = textTable;
 		this.tableModel = textTable.getTableModel();
+	}
+
+	public TextTableRenderer(TextTable textTable, boolean showNulls) {
+		this.textTable = textTable;
+		this.tableModel = textTable.getTableModel();
+		this.showNulls = showNulls;
 	}
 
 	@Override
@@ -86,7 +94,10 @@ public class TextTableRenderer implements TableRenderer {
 		for (int col = 0; col < tableModel.getColumnCount(); col++) {
 			for (int row = 0; row < tableModel.getRowCount(); row++) {
 				Object val = tableModel.getValueAt(row, col);
-				String valStr = val == null ? "" : String.valueOf(val);
+				String valStr = String.valueOf(val);
+				if (!showNulls && val == null) {
+					valStr = "";
+				}
 				lengths[col] = Math.max(valStr.length(), lengths[col]);
 			}
 		}
@@ -133,7 +144,11 @@ public class TextTableRenderer implements TableRenderer {
 		if (textTable.rowSorter != null) {
 			rowIndex = textTable.rowSorter.convertRowIndexToModel(row);
 		}
-		Object value = empty ? "" : tableModel.getValueAt(rowIndex, col);
+		Object val = tableModel.getValueAt(rowIndex, col);
+		if (val == null && !showNulls) {
+			val = "";
+		}
+		Object value = empty ? "" : val;
 		ps.printf(formats[col], value);
 	}
 
