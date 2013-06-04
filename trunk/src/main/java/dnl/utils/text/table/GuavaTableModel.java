@@ -1,8 +1,7 @@
-package dnl.utils.text.table.csv;
+package dnl.utils.text.table;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import javax.swing.table.AbstractTableModel;
