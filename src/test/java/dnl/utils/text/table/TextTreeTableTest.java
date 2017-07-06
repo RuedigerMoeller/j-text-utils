@@ -20,7 +20,7 @@ public class TextTreeTableTest {
 				};
 		TextTreeTable tt = new TextTreeTable(titles, data);
 		tt.setAddRowNumbering(true);
-//		tt.addSeparatorPolicy(new LastRowSeparatorPolicy());
+		tt.addSeparatorPolicy(new LastRowSeparatorPolicy());
 		tt.setSort(0);
 		tt.printTable(System.out, 5);		
 	}
@@ -37,8 +37,8 @@ public class TextTreeTableTest {
 				{ "val11", "val21"}, 
 		};
 		TextTable tt = new TextTable(titles, data);
-//		tt.setAddRowNumbering(true);
-//		tt.addSeparatorPolicy(new LastRowSeparatorPolicy());
+		tt.setAddRowNumbering(true);
+		tt.addSeparatorPolicy(new LastRowSeparatorPolicy());
 		tt.setSort(0);
 		tt.printTable();		
 	}
@@ -55,8 +55,8 @@ public class TextTreeTableTest {
 				{ "val11"}, 
 		};
 		TextTable tt = new TextTable(titles, data);
-//		tt.setAddRowNumbering(true);
-//		tt.addSeparatorPolicy(new LastRowSeparatorPolicy());
+		tt.setAddRowNumbering(true);
+		tt.addSeparatorPolicy(new LastRowSeparatorPolicy());
 		tt.setSort(0);
 		tt.printTable();		
 	}

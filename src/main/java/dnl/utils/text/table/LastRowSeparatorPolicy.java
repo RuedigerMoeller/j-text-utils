@@ -13,7 +13,7 @@ public class LastRowSeparatorPolicy extends SeparatorPolicy {
 
 	@Override
 	public boolean hasSeparatorAt(int row) {
-		if (row == tableModel.getRowCount() - 1)
+		if (row == tableModel.getRowCount())
 			return true;
 		return false;
 	}

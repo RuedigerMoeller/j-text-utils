@@ -42,7 +42,7 @@ public class TextTreeTable extends TextTable {
 
 		@Override
 		boolean hasSeparatorAt(int row) {
-			if(row == 0)
+			if (row == 0 || row >= getTableModel().getRowCount())
 				return false;
 			Object rowAgo = getValueAt(row-1, hierarchicalColumn);
 			Object hierarchicalColumnVal = getValueAt(row, hierarchicalColumn);

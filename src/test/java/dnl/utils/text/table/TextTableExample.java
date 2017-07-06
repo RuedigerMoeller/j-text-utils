@@ -26,7 +26,7 @@ public class TextTableExample {
 		
 		TextTable tt = new TextTable(columnNames, data);
 		tt.setAddRowNumbering(true);
-//		tt.addSeparatorPolicy(new LastRowSeparatorPolicy());
+		tt.addSeparatorPolicy(new LastRowSeparatorPolicy());
 		tt.setSort(0);
 		tt.printTable();
 	}
