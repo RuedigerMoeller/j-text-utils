@@ -18,8 +18,8 @@ public class TextTableTest {
 				{ "val11", "val21", "val31" }, 
 				};
 		TextTable tt = new TextTable(titles, data);
-//		tt.setAddRowNumbering(true);
-//		tt.addSeparatorPolicy(new LastRowSeparatorPolicy());
+		tt.setAddRowNumbering(true);
+		tt.addSeparatorPolicy(new LastRowSeparatorPolicy());
 		tt.setSort(0);
 		tt.printTable();		
 	}
@@ -36,8 +36,8 @@ public class TextTableTest {
 				{ "val11", "val21"}, 
 		};
 		TextTable tt = new TextTable(titles, data);
-//		tt.setAddRowNumbering(true);
-//		tt.addSeparatorPolicy(new LastRowSeparatorPolicy());
+		tt.setAddRowNumbering(true);
+		tt.addSeparatorPolicy(new LastRowSeparatorPolicy());
 		tt.setSort(0);
 		tt.printTable();		
 	}
@@ -54,8 +54,8 @@ public class TextTableTest {
 				{ "val11"}, 
 		};
 		TextTable tt = new TextTable(titles, data);
-//		tt.setAddRowNumbering(true);
-//		tt.addSeparatorPolicy(new LastRowSeparatorPolicy());
+		tt.setAddRowNumbering(true);
+		tt.addSeparatorPolicy(new LastRowSeparatorPolicy());
 		tt.setSort(0);
 		tt.printTable();		
 	}

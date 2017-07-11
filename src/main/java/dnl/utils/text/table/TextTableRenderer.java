@@ -43,7 +43,8 @@ public class TextTableRenderer implements TableRenderer {
 
 		// Find the maximum length of a string in each column
 		resolveColumnLengths();
-		String separator = resolveSeparator(lengths);
+		String separator = resolveSeparator(lengths, "-", "|");
+        String footerSeparator = resolveSeparator(lengths, "-", "'");
 
 		int rowCount = tableModel.getRowCount();
 		int rowCountStrSize = Integer.toString(rowCount).length();
@@ -53,7 +54,7 @@ public class TextTableRenderer implements TableRenderer {
 		// Generate a format string for each column and calc totalLength
 		int totLength = resolveFormats();
 
-		String headerStartSep = StringUtils.repeat("_", totLength + tableModel.getColumnCount() * 2);
+		String headerStartSep = "," + StringUtils.repeat("-", (totLength + tableModel.getColumnCount() * 2) - 1) + ",";
 		ps.print(indentStr);
 		indentAccordingToNumbering(ps, indexFormat1);
 		ps.println(headerStartSep);
@@ -72,7 +73,7 @@ public class TextTableRenderer implements TableRenderer {
 		ps.println("|");
 
 		// Print 'em out
-		for (int i = 0; i < tableModel.getRowCount(); i++) {
+		for (int i = 0; i < rowCount; i++) {
 			addSeparatorIfNeeded(ps, separator, indexFormat1, i, indentStr);
 			ps.print(indentStr);
 			if (textTable.addRowNumbering) {
@@ -86,6 +87,9 @@ public class TextTableRenderer implements TableRenderer {
 				printValue(ps, i, j, false);
 			}
 		}
+        ps.print(indentStr);
+        indentAccordingToNumbering(ps, indexFormat1);
+        ps.println(footerSeparator);
 	}
 
 	private void resolveColumnLengths() {
@@ -103,17 +107,17 @@ public class TextTableRenderer implements TableRenderer {
 		}
 	}
 
-	private String resolveSeparator(int[] lengths) {
+	private String resolveSeparator(int[] lengths, String lineChar, String sepChar) {
 		StringBuilder sepSb = new StringBuilder();
 
 		for (int j = 0; j < tableModel.getColumnCount(); j++) {
 			if (j == 0) {
-				sepSb.append("|");
+				sepSb.append(sepChar);
 			}
 			lengths[j] = Math.max(tableModel.getColumnName(j).length(), lengths[j]);
 			// add 1 because of the leading space in each column
-			sepSb.append(StringUtils.repeat("-", lengths[j] + 1));
-			sepSb.append("|");
+			sepSb.append(StringUtils.repeat(lineChar, lengths[j] + 1));
+			sepSb.append(sepChar);
 		}
 		String separator = sepSb.toString();
 		return separator;
