@@ -44,7 +44,7 @@ public class TextTableRenderer implements TableRenderer {
 		// Find the maximum length of a string in each column
 		resolveColumnLengths();
 		String separator = resolveSeparator(lengths, "-", "|");
-        String lastRowseparator = resolveSeparator(lengths, "-", "'");
+        String footerSeparator = resolveSeparator(lengths, "-", "'");
 
 		int rowCount = tableModel.getRowCount();
 		int rowCountStrSize = Integer.toString(rowCount).length();
@@ -87,7 +87,7 @@ public class TextTableRenderer implements TableRenderer {
 				printValue(ps, i, j, false);
 			}
 		}
-        addFinalSeparatorIfNeeded(ps, lastRowseparator, indexFormat1, rowCount, indentStr);
+        ps.println(footerSeparator);
 	}
 
 	private void resolveColumnLengths() {
@@ -129,15 +129,6 @@ public class TextTableRenderer implements TableRenderer {
 			ps.println(separator);
 		}
 	}
-
-    private void addFinalSeparatorIfNeeded(PrintStream ps, String separator, String indexFormat1, int i, String indentStr) {
-        if (!textTable.separatorPolicies.isEmpty() && textTable.hasSeparatorAt(i)
-                || ((tableModel instanceof TextTableModel) && ((TextTableModel) tableModel).addSeparatorAt(i))) {
-            indentAccordingToNumbering(ps, indexFormat1);
-            ps.print(indentStr);
-            ps.println(separator);
-        }
-    }
 
 	protected boolean modelAllowsNumberingAt(int row) {
 		if (row == 8) {
