@@ -87,6 +87,8 @@ public class TextTableRenderer implements TableRenderer {
 				printValue(ps, i, j, false);
 			}
 		}
+        ps.print(indentStr);
+        indentAccordingToNumbering(ps, indexFormat1);
         ps.println(footerSeparator);
 	}
 
